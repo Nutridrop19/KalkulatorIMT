@@ -33,6 +33,14 @@
             color: white;
             box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
         }
+        .modal{
+    transition: .2s ease;
+}
+
+.modal.hidden{
+    opacity:0;
+    pointer-events:none;
+}
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
@@ -98,7 +106,18 @@
                     </div>
                     
                     <div>
-                        <label class="block text-xs font-bold text-gray-500 mb-1">Aktivitas</label>
+                        <div class="flex justify-between items-center mb-1">
+    <label class="block text-xs font-bold text-gray-500">
+        Aktivitas
+    </label>
+
+    <button
+        type="button"
+        onclick="toggleInfo()"
+        class="text-blue-500 hover:text-blue-700 text-sm">
+        <i class="fas fa-info-circle"></i>
+    </button>
+</div>
                         <div class="relative">
                             <select id="activityLevel" class="w-full bg-gray-50 border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition text-gray-800 appearance-none cursor-pointer">
                                 <option value="1.2">Sangat Ringan</option>
@@ -279,5 +298,55 @@
             document.getElementById('resultContainer').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
     </script>
+    <!-- Info Aktivitas -->
+<div id="infoModal"
+class="modal hidden fixed inset-0 bg-black/40 z-50 flex items-center justify-center px-4">
+
+<div class="bg-white rounded-2xl p-5 w-full max-w-sm relative">
+
+<button
+onclick="toggleInfo()"
+class="absolute top-3 right-3 text-gray-400">
+✕
+</button>
+
+<h3 class="font-bold text-lg mb-4">
+Info Aktivitas
+</h3>
+
+<div class="space-y-3 text-sm text-gray-600">
+
+<div>
+<b>Sangat Ringan</b><br>
+Duduk, rebahan, kerja depan laptop.
+</div>
+
+<div>
+<b>Ringan</b><br>
+Jalan santai, aktivitas rumah.
+</div>
+
+<div>
+<b>Sedang</b><br>
+Olahraga rutin 3-5x/minggu.
+</div>
+
+<div>
+<b>Berat</b><br>
+Kerja fisik atau olahraga intens.
+</div>
+
+</div>
+
+</div>
+</div>
+
+<script>
+function toggleInfo(){
+document
+.getElementById("infoModal")
+.classList.toggle("hidden");
+}
+</script>
 </body>
 </html>
