@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fit Up - Kalkulator Kesehatan IMT Canggih</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f3f4f6;
+            background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        
+        .gender-btn.active {
+            background: linear-gradient(135deg, #3b82f6, #6366f1);
+            color: white;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <!-- Main Container -->
+    <div class="w-full max-w-4xl glass-card rounded-3xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
+        
+        <!-- Left Side: Branding -->
+        <div class="md:w-5/12 bg-gradient-to-br from-blue-600 to-indigo-700 p-8 text-white relative overflow-hidden">
+            <div class="absolute top-0 right-0 -mr-10 -mt-10 w-40 h-40 rounded-full bg-white opacity-10"></div>
+            <div class="absolute bottom-0 left-0 -ml-10 -mb-10 w-40 h-40 rounded-full bg-white opacity-10"></div>
+            
+            <div class="relative z-10 h-full flex flex-col justify-center items-center text-center">
+                <div class="bg-white/20 p-4 rounded-full mb-6 backdrop-blur-sm">
+                    <i class="fas fa-heartbeat text-5xl text-white"></i>
+                </div>
+                <h1 class="text-4xl font-bold mb-2 tracking-wide">FIT UP</h1>
+                <p class="text-blue-100 text-lg font-medium mb-8">Kalkulator Gizi & Kesehatan</p>
+                
+                <div class="w-full bg-white/10 rounded-xl p-4 mt-4">
+                    <p class="text-xs uppercase tracking-widest text-blue-200 mb-2">Target Sehat Anda</p>
+                    <div class="flex justify-between items-end text-left">
+                        <div>
+                            <p class="text-3xl font-bold" id="target-cal">-</p>
+                            <p class="text-xs text-blue-200">Kalori</p>
+                        </div>
+                        <div class="w-px h-10 bg-white/20"></div>
+                        <div>
+                            <p class="text-3xl font-bold" id="target-pro">-</p>
+                            <p class="text-xs text-blue-200">Protein (g)</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-xs text-blue-200 mt-8">Created by Group 4</p>
+            </div>
+        </div>
+
+        <!-- Right Side: Form & Results -->
+        <div class="md:w-7/12 p-8 bg-white">
+            
+            <!-- Tabs/Gender Selector -->
+            <div class="flex justify-center mb-6">
+                <div class="bg-gray-100 p-1.5 rounded-xl flex w-full max-w-xs relative shadow-inner">
+                    <input type="hidden" id="gender" value="pria">
+                    <button id="maleBtn" class="gender-btn active flex-1 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 flex items-center justify-center gap-2">
+                        <i class="fas fa-mars"></i> Pria
+                    </button>
+                    <button id="femaleBtn" class="gender-btn text-gray-500 flex-1 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 flex items-center justify-center gap-2">
+                        <i class="fas fa-venus"></i> Wanita
+                    </button>
+                </div>
+            </div>
+
+            <!-- Input Grid (Tanpa Form Tag) -->
+            <div id="calcForm" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 mb-1">Umur</label>
+                        <div class="relative">
+                            <input type="number" id="age" class="w-full bg-gray-50 border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition text-gray-800" placeholder="Tahun">
+                            <i class="fas fa-birthday-cake absolute right-4 top-3.5 text-gray-400"></i>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 mb-1">Aktivitas</label>
+                        <div class="relative">
+                            <select id="activityLevel" class="w-full bg-gray-50 border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition text-gray-800 appearance-none cursor-pointer">
+                                <option value="1.2">Sangat Ringan</option>
+                                <option value="1.375">Ringan</option>
+                                <option value="1.55">Sedang</option>
+                                <option value="1.725">Berat</option>
+                            </select>
+                            <i class="fas fa-chevron-down absolute right-4 top-3.5 text-gray-400 pointer-events-none"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 mb-1">Tinggi</label>
+                        <div class="relative">
+                            <input type="number" id="height" class="w-full bg-gray-50 border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition text-gray-800" placeholder="Cm">
+                            <i class="fas fa-ruler-vertical absolute right-4 top-3.5 text-gray-400"></i>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 mb-1">Berat</label>
+                        <div class="relative">
+                            <input type="number" id="weight" class="w-full bg-gray-50 border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 transition text-gray-800" placeholder="Kg">
+                            <i class="fas fa-weight-hanging absolute right-4 top-3.5 text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tombol dengan type="button" agar tidak submit form -->
+                <button type="button" onclick="calculate()" class="w-full mt-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 active:scale-95 flex justify-center items-center gap-2">
+                    <i class="fas fa-calculator"></i> Hitung Sekarang
+                </button>
+            </div>
+
+            <!-- Results Section -->
+            <div id="resultContainer" class="hidden mt-6">
+                <div class="border-t border-gray-200 pt-4">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 text-center">Hasil Perhitungan</h3>
+                    
+                    <!-- IMT -->
+                    <div class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl p-4 mb-4 text-white">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-blue-100">Indeks Massa Tubuh (IMT)</p>
+                                <p class="text-3xl font-bold" id="bmiResult">-</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm text-blue-100">Kategori</p>
+                                <p class="text-xl font-semibold" id="bmiCategory">-</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cards Grid -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-purple-50 rounded-xl p-3 border border-purple-100">
+                            <p class="text-xs text-purple-600 mb-1">Kalori/Hari</p>
+                            <p class="text-xl font-bold text-purple-700" id="calorieResult">-</p>
+                            <p class="text-xs text-purple-400">kkal</p>
+                        </div>
+                        <div class="bg-green-50 rounded-xl p-3 border border-green-100">
+                            <p class="text-xs text-green-600 mb-1">Protein/Hari</p>
+                            <p class="text-xl font-bold text-green-700" id="proteinResult">-</p>
+                            <p class="text-xs text-green-400">gram</p>
+                        </div>
+                        <div class="bg-yellow-50 rounded-xl p-3 border border-yellow-100">
+                            <p class="text-xs text-yellow-600 mb-1">Lemak/Hari</p>
+                            <p class="text-xl font-bold text-yellow-700" id="fatResult">-</p>
+                            <p class="text-xs text-yellow-400">gram</p>
+                        </div>
+                        <div class="bg-red-50 rounded-xl p-3 border border-red-100">
+                            <p class="text-xs text-red-600 mb-1">Karbo/Hari</p>
+                            <p class="text-xl font-bold text-red-700" id="carbResult">-</p>
+                            <p class="text-xs text-red-400">gram</p>
+                        </div>
+                    </div>
+
+                    <!-- Rekomendasi -->
+                    <div class="mt-4 bg-gray-50 rounded-xl p-4">
+                        <p class="font-semibold text-gray-700 mb-2"><i class="fas fa-lightbulb text-yellow-500 mr-2"></i>Rekomendasi</p>
+                        <p id="recommendation" class="text-sm text-gray-600">Masukkan data Anda untuk melihat rekomendasi.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Gender selection
+        const maleBtn = document.getElementById('maleBtn');
+        const femaleBtn = document.getElementById('femaleBtn');
+        const genderInput = document.getElementById('gender');
+
+        maleBtn.addEventListener('click', () => {
+            maleBtn.classList.add('active');
+            femaleBtn.classList.remove('active');
+            genderInput.value = 'pria';
+        });
+
+        femaleBtn.addEventListener('click', () => {
+            femaleBtn.classList.add('active');
+            maleBtn.classList.remove('active');
+            genderInput.value = 'wanita';
+        });
+
+        function calculate() {
+            const gender = document.getElementById('gender').value;
+            const age = parseInt(document.getElementById('age').value);
+            const height = parseInt(document.getElementById('height').value);
+            const weight = parseInt(document.getElementById('weight').value);
+            const activityLevel = parseFloat(document.getElementById('activityLevel').value);
+
+            // Validasi input
+            if (!age || !height || !weight) {
+                alert('Silakan lengkapi semua data terlebih dahulu!');
+                return;
+            }
+
+            if (age < 1 || age > 120 || height < 50 || height > 250 || weight < 10 || weight > 300) {
+                alert('Masukkan data yang valid!');
+                return;
+            }
+
+            // Hitung IMT
+            const bmi = weight / Math.pow(height/100, 2);
+            let bmiCategory;
+            if (bmi < 18.5) bmiCategory = 'Kurus';
+            else if (bmi >= 18.5 && bmi < 25) bmiCategory = 'Normal';
+            else if (bmi >= 25 && bmi < 30) bmiCategory = 'Gemuk';
+            else bmiCategory = 'Obesitas';
+
+            // Hitung BMR (Mifflin-St Jeor)
+            let bmr;
+            if (gender === 'pria') {
+                bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
+            } else {
+                bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161;
+            }
+
+            // Hitung kebutuhan kalori
+            const totalCalories = Math.round(bmr * activityLevel);
+
+            // Hitung makronutrien (15% protein, 25% lemak, 60% karbo)
+            const protein = Math.round((0.15 * totalCalories) / 4);
+            const fat = Math.round((0.25 * totalCalories) / 9);
+            const carbs = Math.round((0.60 * totalCalories) / 4);
+
+            // Tampilkan hasil
+            document.getElementById('bmiResult').textContent = bmi.toFixed(1);
+            document.getElementById('bmiCategory').textContent = bmiCategory;
+            document.getElementById('calorieResult').textContent = totalCalories;
+            document.getElementById('proteinResult').textContent = protein;
+            document.getElementById('fatResult').textContent = fat;
+            document.getElementById('carbResult').textContent = carbs;
+            
+            // Update target di sidebar
+            document.getElementById('target-cal').textContent = totalCalories;
+            document.getElementById('target-pro').textContent = protein;
+
+            // Rekomendasi
+            let recommendation = '';
+            if (bmiCategory === 'Kurus') {
+                recommendation = 'Anda termasuk kategori kurus. Disarankan untuk meningkatkan asupan kalori dengan makanan bergizi tinggi dan rutin berolahraga untuk membangun massa otot.';
+            } else if (bmiCategory === 'Normal') {
+                recommendation = 'Berat badan Anda ideal! Pertahankan dengan pola makan seimbang dan olahraga teratur.';
+            } else if (bmiCategory === 'Gemuk') {
+                recommendation = 'Anda termasuk kategori gemuk. Disarankan untuk mengurangi asupan kalori dan meningkatkan aktivitas fisik.';
+            } else {
+                recommendation = 'Anda termasuk obesitas. Sangat disarankan untuk berkonsultasi dengan ahli gizi untuk program penurunan berat badan.';
+            }
+
+            document.getElementById('recommendation').textContent = recommendation;
+            document.getElementById('resultContainer').classList.remove('hidden');
+            
+            // Smooth scroll ke hasil
+            document.getElementById('resultContainer').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    </script>
+</body>
+</html>
